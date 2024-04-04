@@ -19,4 +19,6 @@ public interface GroupService {
 
     Group update(GroupRequest groupRequest, UUID id);
     Map<GroupResponse, List<StudentResponse>> getGroupWithStudents();
+
+    void delete(UUID groupId);
 }

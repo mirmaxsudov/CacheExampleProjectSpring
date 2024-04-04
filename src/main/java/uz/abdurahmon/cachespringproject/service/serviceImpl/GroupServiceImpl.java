@@ -1,6 +1,9 @@
 package uz.abdurahmon.cachespringproject.service.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import uz.abdurahmon.cachespringproject.exceptions.CustomNotFoundException;
 import uz.abdurahmon.cachespringproject.model.entity.Group;
@@ -23,11 +26,13 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
 
     @Override
+    @Cacheable(value = "groups")
     public List<Group> get() {
         return groupRepository.findAll();
     }
 
     @Override
+    @Cacheable(value = "groups", key = "#id")
     public Group get(UUID id) {
         return groupRepository
                 .findById(
@@ -41,6 +46,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @CacheEvict(value = "groups", allEntries = true)
     public Group create(GroupRequest groupRequest) {
         Group group = groupMapper(groupRequest);
 
@@ -58,6 +64,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @CachePut(value = "groups", key = "#id")
     public Group update(GroupRequest groupRequest, UUID id) {
         Group group = this.get(id);
 
@@ -87,6 +94,16 @@ public class GroupServiceImpl implements GroupService {
         }
 
         return map;
+    }
+
+    @Override
+    @CacheEvict(value = "groups", allEntries = true, key = "#groupId")
+    public void delete(UUID groupId) {
+        try {
+            groupRepository.deleteById(groupId);
+        } catch (Exception e) {
+            throw new CustomNotFoundException("There is no such group with this id -> " + groupId);
+        }
     }
 
     private StudentResponse toDto(Student student) {
