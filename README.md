@@ -43,4 +43,4 @@ CacheSpringProject is a Spring Boot application designed to manage groups and st
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your_username/CacheSpringProject.git
+git clone https://github.com/mirmaxsudov/CacheSpringProject.git
