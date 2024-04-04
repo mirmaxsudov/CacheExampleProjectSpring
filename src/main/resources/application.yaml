@@ -3,12 +3,17 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/cache_example
+    url: jdbc:postgresql://localhost:5432/your_database
     username: postgres
-    password: 1212
+    password: your_password
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+  graphql:
+    graphiql:
+      enabled: true
+      path: /graphiql

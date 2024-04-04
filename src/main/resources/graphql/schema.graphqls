@@ -1,0 +1,33 @@
+type Query {
+    students: [StudentResponse]
+    groups: [GroupResponse]
+    getStudentById(id: String!): StudentResponse
+}
+
+type Mutation {
+    createStudent(
+        studentRequest: StudentRequest!
+    ): StudentResponse
+}
+
+input StudentRequest {
+    name: String
+    surname: String
+    phoneNumber: String
+    address: String
+}
+
+type StudentResponse {
+    id: String
+    name: String
+    surname: String
+    phoneNumber: String
+    address: String
+}
+
+type GroupResponse {
+    id: String
+    groupName: String
+    groupDescription: String
+    students: [StudentResponse]
+}

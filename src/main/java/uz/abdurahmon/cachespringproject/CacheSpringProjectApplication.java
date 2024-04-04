@@ -11,5 +11,4 @@ public class CacheSpringProjectApplication {
     public static void main(String[] args) {
         SpringApplication.run(CacheSpringProjectApplication.class, args);
     }
-
 }
