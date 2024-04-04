@@ -11,14 +11,16 @@ import java.util.Map;
 import java.util.UUID;
 
 public interface GroupService {
-    List<Group> get();
+    List<GroupResponse> get();
 
-    Group get(UUID id);
+    GroupResponse get(UUID id);
 
-    Group create(GroupRequest groupRequest);
+    GroupResponse create(GroupRequest groupRequest);
 
-    Group update(GroupRequest groupRequest, UUID id);
+    GroupResponse update(GroupRequest groupRequest, UUID id);
     Map<GroupResponse, List<StudentResponse>> getGroupWithStudents();
 
     void delete(UUID groupId);
+
+    Group getForBack(UUID id);
 }

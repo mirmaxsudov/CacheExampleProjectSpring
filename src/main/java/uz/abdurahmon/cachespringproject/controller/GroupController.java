@@ -1,11 +1,7 @@
 package uz.abdurahmon.cachespringproject.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
-import uz.abdurahmon.cachespringproject.model.entity.Group;
 import uz.abdurahmon.cachespringproject.model.request.GroupRequest;
 import uz.abdurahmon.cachespringproject.model.response.GroupResponse;
 import uz.abdurahmon.cachespringproject.model.response.StudentResponse;
@@ -23,13 +19,13 @@ public class GroupController {
     private final GroupService groupService;
 
     @GetMapping("/")
-    public List<Group> getAll() {
+    public List<GroupResponse> getAll() {
         System.out.println("Retrieving all groups from the database.");
         return groupService.get();
     }
 
     @GetMapping("/{groupId}")
-    public Group getById(@PathVariable("groupId") UUID groupId) {
+    public GroupResponse getById(@PathVariable("groupId") UUID groupId) {
 
         System.out.println("Retrieving group with ID: " + groupId + " from the database.");
         return groupService.get(groupId);
@@ -42,7 +38,7 @@ public class GroupController {
     }
 
     @PostMapping("/")
-    public Group create(@RequestBody GroupRequest groupRequest) {
+    public GroupResponse create(@RequestBody GroupRequest groupRequest) {
         System.out.println("Creating a new group.");
         return groupService.create(groupRequest);
     }

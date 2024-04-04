@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -24,5 +25,5 @@ public class Group {
     private String groupDescription;
     private LocalDateTime createAt;
     @ManyToMany(mappedBy = "groups")
-    private List<Student> students;
+    private Set<Student> students;
 }

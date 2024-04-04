@@ -15,10 +15,7 @@ import uz.abdurahmon.cachespringproject.repository.GroupRepository;
 import uz.abdurahmon.cachespringproject.service.baseService.GroupService;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -27,13 +24,15 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     @Cacheable(value = "groups")
-    public List<Group> get() {
-        return groupRepository.findAll();
+    public List<GroupResponse> get() {
+        return getForBackList()
+                .stream()
+                .map(this::getGroupResponse)
+                .toList();
     }
 
     @Override
-    @Cacheable(value = "groups", key = "#id")
-    public Group get(UUID id) {
+    public Group getForBack(UUID id) {
         return groupRepository
                 .findById(
                         id
@@ -46,12 +45,18 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    @CacheEvict(value = "groups", allEntries = true)
-    public Group create(GroupRequest groupRequest) {
-        Group group = groupMapper(groupRequest);
+    @Cacheable(value = "groups", key = "#id")
+    public GroupResponse get(UUID id) {
+        Group forBack = getForBack(id);
+        return getGroupResponse(forBack);
+    }
 
+    @Override
+    @CacheEvict(value = "groups", allEntries = true)
+    public GroupResponse create(GroupRequest groupRequest) {
+        Group group = groupMapper(groupRequest);
         groupRepository.saveAndFlush(group);
-        return group;
+        return getGroupResponse(group);
     }
 
     private static Group groupMapper(GroupRequest groupRequest) {
@@ -65,25 +70,35 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     @CachePut(value = "groups", key = "#id")
-    public Group update(GroupRequest groupRequest, UUID id) {
-        Group group = this.get(id);
+    public GroupResponse update(GroupRequest groupRequest, UUID id) {
+        Group group = getForBack(id);
 
         group.setGroupName(groupRequest.getGroupName());
         group.setGroupDescription(groupRequest.getGroupDescription());
 
         groupRepository.saveAndFlush(group);
 
-        return group;
+        return getGroupResponse(group);
+    }
+
+    private GroupResponse getGroupResponse(Group group) {
+        return GroupResponse
+                .builder()
+                .groupName(group.getGroupName())
+                .groupDescription(group.getGroupDescription())
+                .createAt(group.getCreateAt())
+                .id(group.getId())
+                .build();
     }
 
     @Override
     public Map<GroupResponse, List<StudentResponse>> getGroupWithStudents() {
         Map<GroupResponse, List<StudentResponse>> map = new LinkedHashMap<>();
 
-        List<Group> groups = get();
+        List<Group> groups = getForBackList();
 
         for (Group group : groups) {
-            List<Student> students = group.getStudents();
+            Set<Student> students = group.getStudents();
             map.put(
                     toDto(group),
                     students
@@ -94,6 +109,10 @@ public class GroupServiceImpl implements GroupService {
         }
 
         return map;
+    }
+
+    private List<Group> getForBackList() {
+        return groupRepository.findAll();
     }
 
     @Override
