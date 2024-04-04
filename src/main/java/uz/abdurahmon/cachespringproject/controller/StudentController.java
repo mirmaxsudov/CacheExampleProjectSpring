@@ -2,7 +2,6 @@ package uz.abdurahmon.cachespringproject.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import uz.abdurahmon.cachespringproject.model.entity.Group;
 import uz.abdurahmon.cachespringproject.model.request.StudentRequest;
 import uz.abdurahmon.cachespringproject.model.response.StudentResponse;
 import uz.abdurahmon.cachespringproject.service.baseService.StudentService;
@@ -39,7 +38,7 @@ public class StudentController {
         return studentService.addStudentToGroup(studentId, groupId);
     }
 
-    @DeleteMapping("/{studentId}")
+    @DeleteMapping("/delete-student-from-group/{studentId}")
     public void delete(@PathVariable("studentId") UUID studentId,
                        @RequestParam("groupId") UUID groupId) {
         studentService.deleteFromGroupById(studentId, groupId);

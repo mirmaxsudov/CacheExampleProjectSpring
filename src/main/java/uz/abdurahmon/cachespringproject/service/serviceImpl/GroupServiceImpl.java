@@ -92,15 +92,15 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Map<GroupResponse, List<StudentResponse>> getGroupWithStudents() {
-        Map<GroupResponse, List<StudentResponse>> map = new LinkedHashMap<>();
+    public Map<UUID, List<StudentResponse>> getGroupWithStudents() {
+        Map<UUID, List<StudentResponse>> map = new LinkedHashMap<>();
 
         List<Group> groups = getForBackList();
 
         for (Group group : groups) {
             Set<Student> students = group.getStudents();
             map.put(
-                    toDto(group),
+                    group.getId(),
                     students
                             .stream()
                             .map(this::toDto)

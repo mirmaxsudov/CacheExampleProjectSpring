@@ -32,7 +32,7 @@ public class GroupController {
     }
 
     @GetMapping("/get-group-with-students")
-    public Map<GroupResponse, List<StudentResponse>> getWithStudents() {
+    public Map<UUID, List<StudentResponse>> getWithStudents() {
         System.out.println("Retrieving groups with students from the database.");
         return groupService.getGroupWithStudents();
     }

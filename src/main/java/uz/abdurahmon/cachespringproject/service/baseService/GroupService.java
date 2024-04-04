@@ -18,7 +18,7 @@ public interface GroupService {
     GroupResponse create(GroupRequest groupRequest);
 
     GroupResponse update(GroupRequest groupRequest, UUID id);
-    Map<GroupResponse, List<StudentResponse>> getGroupWithStudents();
+    Map<UUID, List<StudentResponse>> getGroupWithStudents();
 
     void delete(UUID groupId);
 

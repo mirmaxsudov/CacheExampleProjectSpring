@@ -78,7 +78,7 @@ public class StudentServiceImpl implements StudentService {
     public String addStudentToGroup(UUID studentId, UUID groupId) {
         Group group = groupService.getForBack(groupId);
         Student student = getForBack(studentId);
-        group.getStudents().add(student);
+        student.getGroups().add(group);
 
         studentRepository.save(student);
         return "Successfully added to group";
